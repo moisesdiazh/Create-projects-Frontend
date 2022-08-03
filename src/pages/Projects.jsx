@@ -4,6 +4,7 @@ import useProjects from "../hooks/useProjects";
 const Projects = () => {
   const { projects } = useProjects(); //obtenemos los proyectos del hook de useProjects y lo realizado en ProjectProvider
 
+  console.log(projects); // para ver que trae los projects
   return (
     <>
       <h1 className="text-4xl font-black">Proyectos</h1>

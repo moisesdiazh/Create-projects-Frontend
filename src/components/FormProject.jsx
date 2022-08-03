@@ -1,14 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import Alert from "./Alert";
 
 const FormProject = () => {
+  const [id, setId] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [finishDate, setFinishDate] = useState("");
   const [client, setClient] = useState("");
 
-  const { showAlert, alert, submitProject } = useProjects();
+  const params = useParams(); //para traer el id en caso que sea un edit
+
+  const { showAlert, alert, submitProject, project } = useProjects();
+
+  useEffect(() => {
+    if (params.id) {
+      setId(project._id); //sera true solamente cuando estemos editando
+      setName(project.name);
+      setDescription(project.description);
+      setFinishDate(project.finishDate?.split("T")[0]);
+      setClient(project.client);
+    } else {
+      console.log("Nuevo proyecto");
+    }
+  }, [params]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,8 +37,9 @@ const FormProject = () => {
 
       return;
     }
-    await submitProject({ name, description, finishDate, client }); //mandamos como objeto al provider
+    await submitProject({ id, name, description, finishDate, client }); //mandamos como objeto al provider
 
+    setId(null)
     setName("");
     setDescription("");
     setFinishDate("");
@@ -104,8 +121,8 @@ const FormProject = () => {
       </div>
 
       <input
-        type="submit"
-        value="Crear proyecto"
+        type="submit" //en caso de que exista un project id entonces muestra Editar proyecto, en caso contrario crear proyecto
+        value={id ? "Editar proyecto" : "Crear proyecto"}
         className="bg-sky-600 w-full rounded-lg p-3 text-white uppercase font-bold block mt-5 text-center rounded cursor-pointer hover:bg-sky-700 transition-colors"
       />
     </form>

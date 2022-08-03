@@ -10,6 +10,7 @@ import ProtectedRoute from "./layouts/ProtectedRoute";
 import Projects from "./pages/Projects";
 import NewProject from "./pages/NewProject";
 import Project from "./pages/Project";
+import EditProject from "./pages/EditProject";
 
 
 import { AuthProvider } from "./context/AuthProvider";
@@ -33,6 +34,7 @@ function App() {
               <Route index element={<Projects />} />
               <Route path="crear-proyecto" element={<NewProject />} />
               <Route path=":id" element={<Project />} />
+              <Route path="editar/:id" element={<EditProject />} />
             </Route>
           </Routes>
         </ProjectsProvider>

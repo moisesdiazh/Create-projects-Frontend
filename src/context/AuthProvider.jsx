@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
         const { data } = await clientAxios("/users/perfil", config);
         //pasamos el bearer token del usuario
         setAuth(data);
-        navigate('/proyectos'); //en caso que el usuario se haya autenticado
+        navigate('/proyectos');
       } catch (error) {
 
         setAuth({});
