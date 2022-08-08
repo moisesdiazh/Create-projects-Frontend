@@ -6,12 +6,11 @@ import DeleteTaskModal from "../components/ModalDeleteTask";
 import Task from "../components/Task";
 import Alert from "../components/Alert";
 
-
 const Project = () => {
   const params = useParams(); //capturamos lo que mandamos por get
 
-  const { getProject, project, loading, handleModalTask, alert } = useProjects();
-
+  const { getProject, project, loading, handleModalTask, alert } =
+    useProjects();
 
   useEffect(() => {
     getProject(params.id);
@@ -21,7 +20,7 @@ const Project = () => {
 
   if (loading) return "Cargando...";
 
-  const {msg} = alert;
+  const { msg } = alert;
 
   return (
     <>
@@ -78,11 +77,10 @@ const Project = () => {
       <p className="font-bold text-xl mt-10">Tareas</p>
 
       <div className="flex justify-center">
-          <div className="w-full md:w-1/4 lg:w-1/2">
-            {msg && <Alert alert={alert} />}
-          </div>
+        <div className="w-full md:w-1/4 lg:w-1/2">
+          {msg && <Alert alert={alert} />}
+        </div>
       </div>
-      
 
       <div className="bg-white  shadow mt-10 rounded-lg">
         {project.tasks?.length ? (
@@ -94,10 +92,19 @@ const Project = () => {
         )}
       </div>
 
+      <div className="flex items-center justify-between mt-10">
+        <p className="font-bold text-xl mt-10">Colaboradores</p>
+        <Link
+          to={`/proyectos/nuevo-colaborador/${project._id}`}
+          className="text-gray-400 hover:text-black  uppercase font-bold"
+        >
+          Añadir colaborador
+        </Link>
+      </div>
+
       <FormTaskModal />
 
       <DeleteTaskModal />
-
     </>
   );
 };
