@@ -15,6 +15,8 @@ const ProjectsProvider = ({ children }) => {
   const [task, setTask] = useState({}); //para poder editar la tarea
   const [modalDeleteTask, setModalDeleteTask] = useState(false); //modal de eliminar
   const [collaborator, setCollaborator] = useState({}); //para manejar el estado del colaborador
+  const [modalDeleteCollaborator, setModalDeleteCollaborator] = useState(false); //para manejar el estado del colaborador
+  
 
   //se va a llenar una vez hagamos la consulta axios
 
@@ -381,8 +383,6 @@ const ProjectsProvider = ({ children }) => {
         error: false
       })
 
-      setCollaborator({}); //limpiamos el colaborador
-      setAlert({}); //limpiamos la alerta en caso que sea actualizado el state
 
     }catch(error){
       setAlert({
@@ -390,6 +390,60 @@ const ProjectsProvider = ({ children }) => {
         error: true
       })
     }
+  }
+
+  const handleModalDeleteCollaborator = (collaborator) => {
+
+    setModalDeleteCollaborator(!modalDeleteCollaborator); //abrimos el modal
+
+    setCollaborator(collaborator); //pasamos el colaborador al state
+
+  }
+
+  const deleteCollaborator = async () => {
+
+    try{
+
+      const token = localStorage.getItem("token"); //obtenemos el token
+      if (!token) {
+        return; //en caso que no exista el token, no se puede hacer la peticion
+      }
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clientAxios.post(`/proyectos/eliminar-colaborador/${project._id}`, {id: collaborator._id }, config);
+
+      const projectUpdated = { ...project };
+      
+      //actualizamos el state
+      projectUpdated.collaborators = projectUpdated.collaborators.filter(collaboratorState => collaboratorState._id !== collaborator._id)
+
+      setProject(projectUpdated); //colocamos un nuevo valor del state de Proyectos con la nueva data
+      setAlert({
+        msg: data.msg,
+        error: false
+      })
+
+      setCollaborator({}); //limpiamos el colaborador
+      setModalDeleteCollaborator(false); //limpiamos el modal de colaborador
+      setAlert({}); //limpiamos la alerta en caso que sea actualizado el state
+    }catch(error){
+      console.log(error.response);
+    }
+
+    setAlert({
+      msg: data.msg,
+      error: false
+    })
+
+    setCollaborator({}); //limpiamos el colaborador
+
+
   }
   return (
     <ProjectsContext.Provider
@@ -413,6 +467,9 @@ const ProjectsProvider = ({ children }) => {
         submitCollaborator,
         collaborator,
         addCollaborator,
+        handleModalDeleteCollaborator,
+        modalDeleteCollaborator,
+        deleteCollaborator
       }}
     >
       {children}

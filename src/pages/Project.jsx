@@ -5,6 +5,9 @@ import FormTaskModal from "../components/FormTaskModal";
 import DeleteTaskModal from "../components/ModalDeleteTask";
 import Task from "../components/Task";
 import Alert from "../components/Alert";
+import Collaborator from "../components/Collaborator";
+import ModalDeleteCollaborator from "../components/ModalDeleteCollaborator";
+
 
 const Project = () => {
   const params = useParams(); //capturamos lo que mandamos por get
@@ -102,9 +105,22 @@ const Project = () => {
         </Link>
       </div>
 
+      <div className="bg-white  shadow mt-10 rounded-lg">
+        {project.collaborators?.length ? (
+          project.collaborators?.map((collaborator) => <Collaborator key={collaborator._id} collaborator={collaborator}/>)
+        ) : (
+          <p className="text-center my-5 p-10">
+            No se encontraron colaboradores
+          </p>
+        )}
+      </div>
+
       <FormTaskModal />
 
       <DeleteTaskModal />
+
+      <ModalDeleteCollaborator />
+
     </>
   );
 };
