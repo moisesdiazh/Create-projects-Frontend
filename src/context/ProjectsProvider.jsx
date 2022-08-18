@@ -160,10 +160,14 @@ const ProjectsProvider = ({ children }) => {
       setProject(data); //colocamos lo obtenido por la data en el state
       setAlert({}); //reseteamos la alerta
     } catch (error) {
+      navigate("/proyectos")
       setAlert({
         msg: error.response.data.msg,
         error: true,
       });
+      setTimeout(() => {
+        setAlert({})
+      }, 4000);
     }
     setLoading(false);
   };
@@ -463,7 +467,6 @@ const ProjectsProvider = ({ children }) => {
 
   const completeTask = async (id) => {
     try {
-
       const token = localStorage.getItem("token"); //obtenemos el token
       if (!token) {
         return; //en caso que no exista el token, no se puede hacer la peticion
@@ -476,14 +479,27 @@ const ProjectsProvider = ({ children }) => {
         },
       };
 
-      const {data} = clientAxios.post(`/tasks/estado/${id}`, {}, config);
+      const { data } = await clientAxios.post(
+        `/tasks/estado/${id}`,
+        {},
+        config
+      );
 
-      console.log(data);
+      //sincronizamos el state
+      const projectUpdated = { ...project}; 
 
-    }catch (error) {
+      projectUpdated.tasks = projectUpdated.tasks.map((taskState) =>
+        taskState._id === data._id ? data : taskState //
+      );
+
+      setProject(projectUpdated); //colocamos un nuevo valor del state de Proyectos con la nueva data
+      setTask({}); //limpiamos el objeto de tarea
+      setAlert({}); //limpiamos la alerta en caso que sea actualizado el state
+
+    } catch (error) {
       console.log(error.response);
     }
-  }
+  };
 
   return (
     <ProjectsContext.Provider
@@ -510,7 +526,7 @@ const ProjectsProvider = ({ children }) => {
         handleModalDeleteCollaborator,
         modalDeleteCollaborator,
         deleteCollaborator,
-        completeTask
+        completeTask,
       }}
     >
       {children}

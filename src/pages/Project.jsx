@@ -31,9 +31,7 @@ const Project = () => {
 
   console.log(project);
 
-  return (
-
-    msg && alert.error ? <Alert alert={alert} /> : (
+  return  (
 
     <>
       <div className="flex justify-between">
@@ -95,12 +93,6 @@ const Project = () => {
 
       <p className="font-bold text-xl mt-10">Tareas</p>
 
-      <div className="flex justify-center">
-        <div className="w-full md:w-1/4 lg:w-1/2">
-          {msg && <Alert alert={alert} />}
-        </div>
-      </div>
-
       <div className="bg-white  shadow mt-10 rounded-lg">
         {project.tasks?.length ? (
           project.tasks?.map((task) => <Task key={task._id} task={task} />)
@@ -144,7 +136,7 @@ const Project = () => {
     </>
   )
   
-  );
+
 };
 
 export default Project;
