@@ -16,7 +16,6 @@ const ProjectsProvider = ({ children }) => {
   const [modalDeleteTask, setModalDeleteTask] = useState(false); //modal de eliminar
   const [collaborator, setCollaborator] = useState({}); //para manejar el estado del colaborador
   const [modalDeleteCollaborator, setModalDeleteCollaborator] = useState(false); //para manejar el estado del colaborador
-  
 
   //se va a llenar una vez hagamos la consulta axios
 
@@ -159,6 +158,7 @@ const ProjectsProvider = ({ children }) => {
 
       const { data } = await clientAxios.get(`/proyectos/${id}`, config); //obtenemos la data de la api
       setProject(data); //colocamos lo obtenido por la data en el state
+      setAlert({}); //reseteamos la alerta
     } catch (error) {
       setAlert({
         msg: error.response.data.msg,
@@ -296,7 +296,7 @@ const ProjectsProvider = ({ children }) => {
   };
 
   const deleteTask = async () => {
-    try{
+    try {
       const token = localStorage.getItem("token"); //obtenemos el token
       if (!token) {
         return; //en caso que no exista el token, no se puede hacer la peticion
@@ -312,12 +312,14 @@ const ProjectsProvider = ({ children }) => {
       const { data } = await clientAxios.delete(`/tasks/${task._id}`, config);
       setAlert({
         msg: data.msg,
-        error: false
-      }); 
+        error: false,
+      });
 
       //sincronizamos el state
       const projectUpdated = { ...project };
-      projectUpdated.tasks = projectUpdated.tasks.filter(taskState => taskState._id !== task._id)
+      projectUpdated.tasks = projectUpdated.tasks.filter(
+        (taskState) => taskState._id !== task._id
+      );
       //filtramos las tareas que no sean la que se elimino
 
       setProject(projectUpdated); //colocamos un nuevo valor del state de Proyectos con la nueva data
@@ -327,15 +329,14 @@ const ProjectsProvider = ({ children }) => {
       setTimeout(() => {
         setAlert({});
       }, 3200);
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const submitCollaborator = async (email) => {
-
     setLoading(true); //activamos el loading
-    try{
+    try {
       const token = localStorage.getItem("token"); //obtenemos el token
       if (!token) {
         return; //en caso que no exista el token, no se puede hacer la peticion
@@ -347,23 +348,27 @@ const ProjectsProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-                                      //pasamos la url, el email y la config
-      const { data } = await clientAxios.post('/proyectos/colaboradores', {email}, config);
+      //pasamos la url, el email y la config
+      const { data } = await clientAxios.post(
+        "/proyectos/colaboradores",
+        { email },
+        config
+      );
 
       setCollaborator(data); //colocamos el colaborador en el state
-      setAlert({});  //limpiamos la alerta en caso que sea actualizado el state
-    }catch(error){
+      setAlert({}); //limpiamos la alerta en caso que sea actualizado el state
+    } catch (error) {
       setAlert({
         msg: error.response.data.msg,
-        error: true
-      })
+        error: true,
+      });
     } finally {
       setLoading(false); //desactivamos el loading
     }
-  }
+  };
 
   const addCollaborator = async (email) => {
-    try{
+    try {
       const token = localStorage.getItem("token"); //obtenemos el token
       if (!token) {
         return; //en caso que no exista el token, no se puede hacer la peticion
@@ -376,34 +381,37 @@ const ProjectsProvider = ({ children }) => {
         },
       };
 
-      const { data } = await clientAxios.post(`/proyectos/colaboradores/${project._id}`, email, config);
+      const { data } = await clientAxios.post(
+        `/proyectos/colaboradores/${project._id}`,
+        email,
+        config
+      );
 
       setAlert({
         msg: data.msg,
-        error: false
-      })
+        error: false,
+      });
+      setCollaborator({}); //limpiamos el colaborador en el state
 
-
-    }catch(error){
+      setTimeout(() => {
+        setAlert({});
+      }, 4000);
+    } catch (error) {
       setAlert({
         msg: error.response.data.msg,
-        error: true
-      })
+        error: true,
+      });
     }
-  }
+  };
 
   const handleModalDeleteCollaborator = (collaborator) => {
-
     setModalDeleteCollaborator(!modalDeleteCollaborator); //abrimos el modal
 
     setCollaborator(collaborator); //pasamos el colaborador al state
-
-  }
+  };
 
   const deleteCollaborator = async () => {
-
-    try{
-
+    try {
       const token = localStorage.getItem("token"); //obtenemos el token
       if (!token) {
         return; //en caso que no exista el token, no se puede hacer la peticion
@@ -416,35 +424,67 @@ const ProjectsProvider = ({ children }) => {
         },
       };
 
-      const { data } = await clientAxios.post(`/proyectos/eliminar-colaborador/${project._id}`, {id: collaborator._id }, config);
+      const { data } = await clientAxios.post(
+        `/proyectos/eliminar-colaborador/${project._id}`,
+        { id: collaborator._id },
+        config
+      );
 
       const projectUpdated = { ...project };
-      
+
       //actualizamos el state
-      projectUpdated.collaborators = projectUpdated.collaborators.filter(collaboratorState => collaboratorState._id !== collaborator._id)
+      projectUpdated.collaborators = projectUpdated.collaborators.filter(
+        (collaboratorState) => collaboratorState._id !== collaborator._id
+      );
 
       setProject(projectUpdated); //colocamos un nuevo valor del state de Proyectos con la nueva data
       setAlert({
         msg: data.msg,
-        error: false
-      })
+        error: false,
+      });
 
       setCollaborator({}); //limpiamos el colaborador
       setModalDeleteCollaborator(false); //limpiamos el modal de colaborador
-      setAlert({}); //limpiamos la alerta en caso que sea actualizado el state
-    }catch(error){
+
+      setTimeout(() => {
+        setAlert({});
+      }, 4000);
+    } catch (error) {
       console.log(error.response);
     }
 
     setAlert({
       msg: data.msg,
-      error: false
-    })
+      error: false,
+    });
 
     setCollaborator({}); //limpiamos el colaborador
+  };
 
+  const completeTask = async (id) => {
+    try {
 
+      const token = localStorage.getItem("token"); //obtenemos el token
+      if (!token) {
+        return; //en caso que no exista el token, no se puede hacer la peticion
+      }
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const {data} = clientAxios.post(`/tasks/estado/${id}`, {}, config);
+
+      console.log(data);
+
+    }catch (error) {
+      console.log(error.response);
+    }
   }
+
   return (
     <ProjectsContext.Provider
       value={{
@@ -469,7 +509,8 @@ const ProjectsProvider = ({ children }) => {
         addCollaborator,
         handleModalDeleteCollaborator,
         modalDeleteCollaborator,
-        deleteCollaborator
+        deleteCollaborator,
+        completeTask
       }}
     >
       {children}

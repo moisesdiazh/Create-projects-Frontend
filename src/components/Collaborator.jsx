@@ -4,7 +4,7 @@ const Collaborator = ({ collaborator }) => {
 
   const { handleModalDeleteCollaborator } = useProjects();
 
-  console.log(collaborator);
+  // console.log(collaborator);
   const { nombre, email } = collaborator;
   return (
 

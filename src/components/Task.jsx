@@ -1,10 +1,13 @@
 import { formatDate } from "../helpers/formatDate";
+import useAdmin from "../hooks/useAdmin";
 import useProjects from "../hooks/useProjects";
 
 const Task = ({ task }) => {
-  const { handleModalEditTask, handleDeleteTask } = useProjects();
+  const { handleModalEditTask, handleDeleteTask, completeTask } = useProjects();
 
-  const { description, name, priority, finishDate, status } = task;
+  const { description, name, priority, finishDate, status, _id } = task;
+
+  const admin = useAdmin(); //hook para verificar quien es el admin del proyecto
 
   return (
     <>
@@ -17,29 +20,30 @@ const Task = ({ task }) => {
         </div>
 
         <div className="flex gap-2">
-          <button
-            className="bg-indigo-500 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
-            onClick={() => handleModalEditTask(task)}
-          >
-            Editar
-          </button>
-
-          {status ? (
-            <button className="bg-sky-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg">
-              Completa
-            </button>
-          ) : (
-            <button className="bg-gray-300 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg">
-              Incompleta
+          {admin && (
+            <button
+              className="bg-indigo-500 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
+              onClick={() => handleModalEditTask(task)}
+            >
+              Editar
             </button>
           )}
 
-          <button
-            className="bg-red-500 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
-            onClick={() => handleDeleteTask(task)}
-          >
-            Eliminar
-          </button>
+            <button
+              className={`${status ? 'bg-sky-500' : 'bg-gray-300'} px-4 py-3 text-white uppercase font-bold text-sm rounded-lg`}
+              onClick={() => completeTask(_id)}
+            >
+              {status ? "Completado" : "Incompleta"}
+            </button>
+
+          {admin && (
+            <button
+              className="bg-red-500 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
+              onClick={() => handleDeleteTask(task)}
+            >
+              Eliminar
+            </button>
+          )}
         </div>
       </div>
     </>

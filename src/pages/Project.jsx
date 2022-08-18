@@ -7,13 +7,17 @@ import Task from "../components/Task";
 import Alert from "../components/Alert";
 import Collaborator from "../components/Collaborator";
 import ModalDeleteCollaborator from "../components/ModalDeleteCollaborator";
+import useAdmin from "../hooks/useAdmin";
 
 
 const Project = () => {
   const params = useParams(); //capturamos lo que mandamos por get
 
-  const { getProject, project, loading, handleModalTask, alert } =
-    useProjects();
+  const { getProject, project, loading, handleModalTask, alert } = useProjects();
+
+  const admin = useAdmin(); //hook para verificar quien es el admin del proyecto
+  console.log(admin);
+
 
   useEffect(() => {
     getProject(params.id);
@@ -25,11 +29,17 @@ const Project = () => {
 
   const { msg } = alert;
 
+  console.log(project);
+
   return (
+
+    msg && alert.error ? <Alert alert={alert} /> : (
+
     <>
       <div className="flex justify-between">
         <h1 className="text-4xl font-black">{name}</h1>
 
+      {admin && ( //en caso que sea el admin solo el puede editar
         <div className="flex items-center gap-2 text-gray-400 hover:text-black">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +63,11 @@ const Project = () => {
             Editar
           </Link>
         </div>
+        )}{/* en caso que sea el admin puede editar */}
+        
       </div>
+
+      {admin && ( //solo el admin
 
       <button
         onClick={handleModalTask} //colocamos el callback para abrir modal
@@ -76,6 +90,8 @@ const Project = () => {
         </svg>
         Añadir tarea
       </button>
+      )} {/* solo el admin */}
+      
 
       <p className="font-bold text-xl mt-10">Tareas</p>
 
@@ -95,6 +111,8 @@ const Project = () => {
         )}
       </div>
 
+      {admin && (
+      <>
       <div className="flex items-center justify-between mt-10">
         <p className="font-bold text-xl mt-10">Colaboradores</p>
         <Link
@@ -114,6 +132,8 @@ const Project = () => {
           </p>
         )}
       </div>
+      </>
+      )}
 
       <FormTaskModal />
 
@@ -122,6 +142,8 @@ const Project = () => {
       <ModalDeleteCollaborator />
 
     </>
+  )
+  
   );
 };
 
