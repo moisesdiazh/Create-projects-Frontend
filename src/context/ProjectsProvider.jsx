@@ -47,7 +47,7 @@ const ProjectsProvider = ({ children }) => {
       }
     };
     getProjects();
-  }, []);
+  }, [auth]);
 
   const showAlert = (alert) => {
     setAlert(alert);
