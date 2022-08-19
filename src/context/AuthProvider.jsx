@@ -44,8 +44,12 @@ const AuthProvider = ({ children }) => {
     authUser();
   }, []);
 
+  const logoutSesionAuth = () => {
+      setAuth({})
+  }
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth, loading }}>
+    <AuthContext.Provider value={{ auth, setAuth, loading, logoutSesionAuth }}>
       {children}
     </AuthContext.Provider>
   );

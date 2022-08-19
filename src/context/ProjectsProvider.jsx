@@ -2,6 +2,8 @@ import { useState, useEffect, createContext } from "react";
 import clientAxios from "../config/clientAxios";
 import Alert from "../components/Alert";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+
 
 const ProjectsContext = createContext();
 
@@ -16,6 +18,9 @@ const ProjectsProvider = ({ children }) => {
   const [modalDeleteTask, setModalDeleteTask] = useState(false); //modal de eliminar
   const [collaborator, setCollaborator] = useState({}); //para manejar el estado del colaborador
   const [modalDeleteCollaborator, setModalDeleteCollaborator] = useState(false); //para manejar el estado del colaborador
+  const [searcher, setSearcher] = useState(false); //para manejar el estado del colaborador
+
+  const { auth } = useAuth(); //para poder usar el context de auth
 
   //se va a llenar una vez hagamos la consulta axios
 
@@ -501,6 +506,16 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
+  const handleSearcher = () => {
+    setSearcher(!searcher); //abrimos el modal
+  }
+
+  const logoutSesion = () => {
+    setProjects([])
+    setProject({})
+    setAlert({})
+  }
+
   return (
     <ProjectsContext.Provider
       value={{
@@ -527,6 +542,9 @@ const ProjectsProvider = ({ children }) => {
         modalDeleteCollaborator,
         deleteCollaborator,
         completeTask,
+        searcher,
+        handleSearcher,
+        logoutSesion
       }}
     >
       {children}

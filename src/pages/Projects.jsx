@@ -2,7 +2,6 @@ import Alert from "../components/Alert";
 import ProjectPreview from "../components/ProjectPreview";
 import useProjects from "../hooks/useProjects";
 
-
 const Projects = () => {
   const { projects, alert } = useProjects(); //obtenemos los proyectos del hook de useProjects y lo realizado en ProjectProvider
 
