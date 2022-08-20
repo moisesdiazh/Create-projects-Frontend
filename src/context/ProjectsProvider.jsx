@@ -18,7 +18,7 @@ const ProjectsProvider = ({ children }) => {
   const [modalDeleteTask, setModalDeleteTask] = useState(false); //modal de eliminar
   const [collaborator, setCollaborator] = useState({}); //para manejar el estado del colaborador
   const [modalDeleteCollaborator, setModalDeleteCollaborator] = useState(false); //para manejar el estado del colaborador
-  const [searcher, setSearcher] = useState(false); //para manejar el estado del colaborador
+  const [buscador, setBuscador] = useState(false); //para manejar el estado del colaborador
 
   const { auth } = useAuth(); //para poder usar el context de auth
 
@@ -47,7 +47,7 @@ const ProjectsProvider = ({ children }) => {
       }
     };
     getProjects();
-  }, [auth]);
+  }, []);
 
   const showAlert = (alert) => {
     setAlert(alert);
@@ -506,8 +506,8 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
-  const handleSearcher = () => {
-    setSearcher(!searcher); //abrimos el modal
+  const handleBuscador = () => {
+    setBuscador(!buscador); //abrimos el modal
   }
 
   const logoutSesion = () => {
@@ -542,8 +542,8 @@ const ProjectsProvider = ({ children }) => {
         modalDeleteCollaborator,
         deleteCollaborator,
         completeTask,
-        searcher,
-        handleSearcher,
+        buscador,
+        handleBuscador,
         logoutSesion
       }}
     >

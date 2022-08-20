@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import FormProject from "../components/FormProject";
 import useProjects from "../hooks/useProjects";
+import { Link } from "react-router-dom";
+
+
 
 const EditProject = () => {
   const params = useParams();
@@ -24,9 +27,32 @@ const EditProject = () => {
   return (
     <>
       <div className="flex justify-between">
-        <div className="font-black text-4xl">Editar proyecto: {name}</div>
+        <div className="font-black text-4xl">
+          Editar proyecto: {name}
+          
+          <div className="mt-2">
 
-        <div className="flex items-center gap-2 text-gray-400 hover:text-black">
+              <Link
+                to={`/proyectos/${params.id}`}
+                className="text-gray-600 hover:text-gray-800 uppercase text-sm font-bold"
+              >
+                
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
+                </svg>  
+              </Link>
+              
+              
+          </div>
+          
+          
+        </div>
+        
+        
+
+        <div className="flex items-center gap-2 ">
+          
+        
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -39,14 +65,19 @@ const EditProject = () => {
               clipRule="evenodd"
             />
           </svg>
-          <button className="uppercase font-bold" onClick={handleDelete}>
+          <button className="text-gray-600 hover:text-gray-800 uppercase text-sm font-bold" onClick={handleDelete}>
             Eliminar
           </button>
+          
         </div>
+
+        
       </div>
 
       <div className="mt-10 flex justify-center">
         <FormProject />
+
+        
       </div>
     </>
   );

@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useProjects from "../hooks/useProjects";
-import Search from "./Search";
+import Busqueda from "./Busqueda";
 
 
 const Header = () => {
 
-  const {handleSearcher, logoutSesion} = useProjects();
+  const {handleBuscador, logoutSesion} = useProjects();
   
   const {logoutSesionAuth} = useAuth();
 
@@ -17,18 +17,21 @@ const Header = () => {
   }
 
   return (
+    
     <header className="px-4 py-5 bg-white border-b">
       <div className="md:flex md:justify-between">
-        <h2 className="text-4xl text-sky-600 font-black mb-5 md:mb-0">UpTask</h2>
+      
+        <h2 className="text-4xl text-sky-600 font-black mb-5 md:mb-0">OrganizerApp</h2>
 
 
+        
         <div className="flex flex-col md:flex-row items-center gap-4">
-          <button type="button" className="font-bold uppercase" onClick={handleSearcher}>
-            Buscar proyecto
-          </button>
-          <Link to="/proyectos" className="font-bold uppercase">
+          <Link to="/proyectos" className="text-gray-600 hover:text-gray-800 uppercase font-bold">
             Proyectos
           </Link>
+          <button type="button" className="bg-sky-600 text-white text-sm p-3 rounded-md uppercase font-bold cursor-pointer hover:bg-sky-700 transition-colors" onClick={handleBuscador}>
+            Buscar proyecto
+          </button>
 
           <button
             type="button"
@@ -38,10 +41,17 @@ const Header = () => {
             Cerrar sesión
           </button>
 
-          <Search/>
+          <Busqueda/>
+
+          
+
+          
         </div>
       </div>
+      
     </header>
+
+    
   );
 };
 

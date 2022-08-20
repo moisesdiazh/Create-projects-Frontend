@@ -40,7 +40,7 @@ const Project = () => {
         <h1 className="text-4xl font-black">{name}</h1>
 
       {admin && ( //en caso que sea el admin solo el puede editar
-        <div className="flex items-center gap-2 text-gray-400 hover:text-black">
+        <div className="flex items-center gap-2 bg-sky-600 text-white text-sm p-3 rounded-md uppercase font-bold cursor-pointer hover:bg-sky-700 transition-colors">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
@@ -111,7 +111,7 @@ const Project = () => {
         <p className="font-bold text-xl mt-10">Colaboradores</p>
         <Link
           to={`/proyectos/nuevo-colaborador/${project._id}`}
-          className="text-gray-400 hover:text-black  uppercase font-bold"
+          className="bg-sky-600 text-white text-sm p-3 rounded-md uppercase font-bold cursor-pointer hover:bg-sky-700 transition-colors"
         >
           Añadir colaborador
         </Link>

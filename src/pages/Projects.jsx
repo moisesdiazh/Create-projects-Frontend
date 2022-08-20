@@ -6,7 +6,7 @@ const Projects = () => {
   const { projects, alert } = useProjects(); //obtenemos los proyectos del hook de useProjects y lo realizado en ProjectProvider
 
   const {msg} = alert;
-  //console.log(projects);  para ver que trae los projects
+  //console.log(projects);  para ver que trae los projectss
   return (
     <>
       <h1 className="text-4xl font-black">Proyectos</h1>

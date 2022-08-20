@@ -34,7 +34,11 @@ const AuthProvider = ({ children }) => {
         const { data } = await clientAxios("/users/perfil", config);
         //pasamos el bearer token del usuario
         setAuth(data);
-        navigate('/proyectos');
+        
+        if(data._id && location.pathname === '/') {
+          navigate('/proyectos');
+
+        }
       } catch (error) {
 
         setAuth({});

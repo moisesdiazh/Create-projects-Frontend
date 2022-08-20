@@ -22,7 +22,7 @@ const Login = () => {
         msg: "Todos los campos son obligatorios",
         error: true
       });
-      return;
+      return
     }
 
     try {                                  //api y objeto con email y password
@@ -31,6 +31,7 @@ const Login = () => {
       // console.log(data);
       localStorage.setItem("token", data.token); //para enviar el token al localStorage
       setAuth(data);
+      
 
     }catch(error){
       setAlert({

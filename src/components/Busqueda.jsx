@@ -1,23 +1,28 @@
 import { Fragment, useState } from 'react'
 import { Combobox, Dialog, Transition } from '@headlessui/react'
 import useProjects from '../hooks/useProjects'
-import Project from '../pages/Project'
+import { useNavigate } from 'react-router-dom'
+
+
 
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const Search = () => {
-    const [ search, setSearch] = useState('');
+const Busqueda = () => {
+    const [ busqueda, setBusqueda] = useState('');
 
-    const {searcher, handleSearcher, projects} = useProjects();
+    const navigate = useNavigate();
 
-    const projectsFiltered = search === "" ? [] : projects.filter(project => project.name.toLowerCase().includes(search.toLowerCase()))
+
+    const {buscador, handleBuscador, projects} = useProjects();
+
+    const projectsFiltered = busqueda === "" ? [] : projects.filter(project => project.name.toLowerCase().includes(busqueda.toLowerCase()))
     
     return (
-        <Transition.Root show={searcher} as={Fragment} afterLeave={ ()  => setSearch("")}>
-            <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto mt-20 p-4 sm:p-20 md:p-20" onClose={ handleSearcher }>
+        <Transition.Root show={buscador} as={Fragment} afterLeave={ ()  => setBusqueda('')}>
+            <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto mt-20 p-4 sm:p-20 md:p-20" onClose={ handleBuscador }>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -48,7 +53,7 @@ const Search = () => {
                         <Combobox.Input
                             className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm"
                             placeholder="Buscar..."
-                            onChange={ e => setSearch(e.target.value)}
+                            onChange={ e => setBusqueda(e.target.value)}
                         />
                     </div>
 
@@ -68,4 +73,4 @@ const Search = () => {
     )
 }
 
-export default Search
+export default Busqueda
