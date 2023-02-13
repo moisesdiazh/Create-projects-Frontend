@@ -306,6 +306,8 @@ const ProjectsProvider = ({ children }) => {
 
   const deleteTask = async () => {
 
+    // console.log(task);
+
     try {
       const token = localStorage.getItem("token"); //obtenemos el token
       if (!token) {
