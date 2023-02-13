@@ -47,7 +47,7 @@ const ProjectsProvider = ({ children }) => {
       }
     };
     getProjects();
-  }, []);
+  }, [auth]);
 
   const showAlert = (alert) => {
     setAlert(alert);
@@ -305,6 +305,7 @@ const ProjectsProvider = ({ children }) => {
   };
 
   const deleteTask = async () => {
+
     try {
       const token = localStorage.getItem("token"); //obtenemos el token
       if (!token) {
@@ -326,6 +327,7 @@ const ProjectsProvider = ({ children }) => {
 
       //sincronizamos el state
       const projectUpdated = { ...project };
+
       projectUpdated.tasks = projectUpdated.tasks.filter(
         (taskState) => taskState._id !== task._id
       );

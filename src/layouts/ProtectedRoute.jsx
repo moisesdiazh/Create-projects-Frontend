@@ -8,9 +8,8 @@ const ProtectedRoute = () => {
 
   const {auth, loading} = useAuth();
   
-  if(loading) {
-    return "Cargando...";
-  }
+  if(loading) return "Cargando..."
+
   return (
     <>
         {auth._id ? 

@@ -22,7 +22,7 @@ const FormProject = () => {
       setFinishDate(project.finishDate?.split("T")[0]);
       setClient(project.client);
     } else {
-      console.log("Nuevo proyecto");
+      // console.log("Nuevo proyecto");
     }
   }, [params]);
 

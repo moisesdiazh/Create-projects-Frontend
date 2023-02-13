@@ -12,7 +12,7 @@ const Login = () => {
 
   const {setAuth} = useAuth();
 
-
+  const navigate = useNavigate()
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -31,8 +31,8 @@ const Login = () => {
       // console.log(data);
       localStorage.setItem("token", data.token); //para enviar el token al localStorage
       setAuth(data);
+      navigate('/proyectos');
       
-
     }catch(error){
       setAlert({
         msg: error.response.data.msg,

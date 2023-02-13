@@ -16,7 +16,7 @@ const Project = () => {
   const { getProject, project, loading, handleModalTask, alert } = useProjects();
 
   const admin = useAdmin(); //hook para verificar quien es el admin del proyecto
-  console.log(admin);
+  // console.log(admin);
 
 
   useEffect(() => {
@@ -25,13 +25,13 @@ const Project = () => {
 
   const { name } = project;
 
-  console.log(project);
+  // console.log(project);
 
   if (loading) return "Cargando...";
 
   const { msg } = alert;
 
-  console.log(project);
+  // console.log(project);
 
   return  (
 
